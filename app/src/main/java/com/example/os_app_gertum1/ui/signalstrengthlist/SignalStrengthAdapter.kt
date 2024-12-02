@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.os_app_gertum1.data.database.SignalStrength
+import com.example.os_app_gertum1.R
 
 class SignalStrengthAdapter(
     private val signals: List<SignalStrength>
@@ -24,8 +25,8 @@ class SignalStrengthAdapter(
 
     override fun onBindViewHolder(holder: SignalViewHolder, position: Int) {
         val signal = signals[position]
-        holder.name.text = signal.name
-        holder.strength.text = "${signal.strength} dBm"
+        holder.name.text = signal.sensorius
+        holder.strength.text = "${signal.stiprumas} dBm"
     }
 
     override fun getItemCount(): Int = signals.size

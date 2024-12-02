@@ -5,12 +5,10 @@ import androidx.room.*
 
 @Dao
 interface SignalStrengthDao {
-    @Query("SELECT * FROM signal_strengths ORDER BY strength DESC")
+    @Query("SELECT * FROM stiprumai")
     fun getAllSignalStrengths(): LiveData<List<SignalStrength>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSignalStrength(signal: SignalStrength)
 
-    @Delete
-    suspend fun deleteSignalStrength(signal: SignalStrength)
+    @Insert
+    suspend fun insertSignalStrength(signalStrength: SignalStrength)
 }

@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_signals"
+        android:id="@+id/recycler_signal_strength"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />

@@ -13,7 +13,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name=".ui.useridentification.UserIdentificationActivity"
+            android:name=".ui.signalstrengthlist.SignalStrengthListActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.OS_app_gertum1">
