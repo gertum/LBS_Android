@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id ("kotlin-parcelize")
+    id("com.google.devtools.ksp") version "2.0.21-1.0.28"
 }
 
 android {
@@ -38,6 +39,11 @@ android {
     buildFeatures {
         compose = true
     }
+    sourceSets {
+        getByName("main") {
+            kotlin.srcDir("build/generated/ksp/main/kotlin")
+        }
+    }
 }
 
 dependencies {
@@ -62,8 +68,9 @@ dependencies {
     // Adding AppCompat dependency
     implementation(libs.androidx.appcompat)
     implementation( libs.androidx.room.runtime) // Room library
-//    kapt ("androidx.room:room-compiler:2.5.1") // Annotation processor
-//    implementation ("androidx.room:room-ktx:2.5.1") // Kotlin extensions for Room
     implementation (libs.androidx.recyclerview) // RecyclerView library
+
+    implementation("androidx.room:room-ktx:2.5.1")
+    ksp("androidx.room:room-compiler:2.5.1") // Use KSP instead of kapt
 
 }
