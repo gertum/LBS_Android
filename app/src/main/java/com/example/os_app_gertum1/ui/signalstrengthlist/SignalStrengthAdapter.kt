@@ -25,8 +25,8 @@ class SignalStrengthAdapter(
 
     override fun onBindViewHolder(holder: SignalViewHolder, position: Int) {
         val signal = signals[position]
-        holder.name.text = signal.sensorius
-        holder.strength.text = "${signal.stiprumas} dBm"
+        holder.name.text = signal.sensor
+        holder.strength.text = "${signal.strength} dBm"
     }
 
     override fun getItemCount(): Int = signals.size

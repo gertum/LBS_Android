@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "stiprumai")
 data class SignalStrength(
     @PrimaryKey(autoGenerate = true) val id: Int = 0, // Primary key with auto-increment
-    val matavimas: Int, // Measurement number or average measurement number
-    val sensorius: String, // Sensor name as per configuration
-    val stiprumas: Int // Signal strength
+    val measurement: Int, // Measurement number or average measurement number
+    val sensor: String, // Sensor name as per configuration
+    val strength: Int // Signal strength
 )

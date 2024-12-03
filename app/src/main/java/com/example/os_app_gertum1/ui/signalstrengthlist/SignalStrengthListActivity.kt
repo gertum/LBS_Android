@@ -20,8 +20,8 @@ class SignalStrengthListActivity : AppCompatActivity() {
 
         // Example data
         val dummyData = listOf(
-            SignalStrength(id = 1, matavimas = 1, sensorius = "SensorA", stiprumas = -50),
-            SignalStrength(id = 2, matavimas = 1, sensorius = "SensorB", stiprumas = -60)
+            SignalStrength(id = 1, measurement = 1, sensor= "SensorA", strength = -50),
+            SignalStrength(id = 2, measurement = 1, sensor = "SensorB", strength = -60)
         )
 
 
