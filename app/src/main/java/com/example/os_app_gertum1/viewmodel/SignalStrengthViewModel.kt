@@ -15,4 +15,16 @@ class SignalStrengthViewModel(private val dao: SignalStrengthDao) : ViewModel() 
             dao.insertSignalStrength(signal)
         }
     }
+
+    fun updateSignal(signal: SignalStrength) {
+        viewModelScope.launch {
+            dao.updateSignalStrength(signal)
+        }
+    }
+
+    fun deleteSignal(signal: SignalStrength) {
+        viewModelScope.launch {
+            dao.deleteSignalStrength(signal)
+        }
+    }
 }
