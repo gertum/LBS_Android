@@ -73,4 +73,14 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.1")
     ksp("androidx.room:room-compiler:2.5.1") // Use KSP instead of kapt
 
+//    // Http4k dependencies
+//    implementation("org.http4k:http4k-core:4.18.0.0") // Core library
+//    implementation("org.http4k:http4k-client-apache:4.18.0.0") // Client to make HTTP requests
+//    implementation("org.http4k:http4k-format-jackson:4.18.0.0") // JSON serialization support
+//
+//    // Gson or Jackson for JSON serialization ///mmmm idk
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+
+    // Map
+    implementation ("org.osmdroid:osmdroid-android:6.1.10")  // Latest version
 }
