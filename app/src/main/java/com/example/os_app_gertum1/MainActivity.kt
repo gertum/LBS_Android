@@ -8,11 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import com.example.os_app_gertum1.ui.map.MapActivity
 import com.example.os_app_gertum1.ui.map.MapFragment
-import com.example.os_app_gertum1.ui.signalstrengthlist.SignalStrengthListActivity
 import com.example.os_app_gertum1.ui.signalstrengthlist.SignalStrengthListFragment
-import com.example.os_app_gertum1.ui.useridentification.UserIdentificationActivity
 import com.example.os_app_gertum1.ui.useridentification.UserIdentificationFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView

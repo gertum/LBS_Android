@@ -24,19 +24,8 @@
             </intent-filter>
         </activity>
 
-        <!-- MapActivity -->
-        <activity android:name=".ui.map.MapActivity"
-            android:label="Map" />
 
-        <!-- SignalStrengthListActivity -->
-        <activity android:name=".ui.signalstrengthlist.SignalStrengthListActivity"
-            android:label="Signal Strengths" />
-
-        <!-- UserIdentificationActivity -->
-        <activity android:name=".ui.useridentification.UserIdentificationActivity"
-            android:label="User Identification" />
-
-        <!-- UserIdentificationActivity -->
+        <!-- EditSignalStrengthActivity -->
         <activity android:name=".ui.editsignalstrength.EditSignalStrengthActivity"
             android:label="Edit Signal Strength" />
 
