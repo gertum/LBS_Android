@@ -2,4 +2,5 @@
     <string name="app_name">OS_app_gertum1</string>
     <string name="nav_open">Open navigation drawer</string>
     <string name="nav_close">Close navigation drawer</string>
+    <string name="add_signal_strength">Add signal strength</string>
 </resources>

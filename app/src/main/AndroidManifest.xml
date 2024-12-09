@@ -17,7 +17,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +35,10 @@
         <!-- UserIdentificationActivity -->
         <activity android:name=".ui.useridentification.UserIdentificationActivity"
             android:label="User Identification" />
+
+        <!-- UserIdentificationActivity -->
+        <activity android:name=".ui.editsignalstrength.EditSignalStrengthActivity"
+            android:label="Edit Signal Strength" />
 
     </application>
 
