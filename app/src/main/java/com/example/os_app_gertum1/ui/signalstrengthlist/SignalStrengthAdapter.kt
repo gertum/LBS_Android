@@ -9,7 +9,7 @@ import com.example.os_app_gertum1.data.database.SignalStrength
 import com.example.os_app_gertum1.R
 
 class SignalStrengthAdapter(
-    private val signals: List<SignalStrength>
+    private var signals: List<SignalStrength>
 ) : RecyclerView.Adapter<SignalStrengthAdapter.SignalViewHolder>() {
 
     class SignalViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -30,4 +30,10 @@ class SignalStrengthAdapter(
     }
 
     override fun getItemCount(): Int = signals.size
+
+    // Method to update the data
+    fun updateData(newSignals: List<SignalStrength>) {
+        signals = newSignals
+        notifyDataSetChanged() // Notify adapter that the data has changed
+    }
 }

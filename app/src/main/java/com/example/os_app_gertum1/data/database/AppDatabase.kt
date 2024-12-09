@@ -13,6 +13,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun measurementDao(): MeasurementDao
 
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null

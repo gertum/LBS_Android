@@ -29,6 +29,10 @@
         <activity android:name=".ui.editsignalstrength.EditSignalStrengthActivity"
             android:label="Edit Signal Strength" />
 
+        <!-- AddSignalStrengthActivity -->
+        <activity android:name=".ui.addsignalstrength.AddSignalStrengthActivity"
+            android:label="Add Signal Strength" />
+
     </application>
 
 </manifest>
