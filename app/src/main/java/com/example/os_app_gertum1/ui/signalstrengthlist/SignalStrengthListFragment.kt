@@ -17,8 +17,10 @@ import com.example.os_app_gertum1.ui.addsignalstrength.AddSignalStrengthActivity
 import com.example.os_app_gertum1.viewmodel.SignalStrengthViewModel
 import com.example.os_app_gertum1.viewmodel.SignalStrengthViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class SignalStrengthListFragment : Fragment() {
 
@@ -36,13 +38,24 @@ class SignalStrengthListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get the base URL from strings.xml
         val baseUrl = getString(R.string.base_path)
 
-        // Initialize Retrofit and API Service
+        // Configure OkHttpClient with custom timeouts
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)  // Increase connection timeout
+            .readTimeout(30, TimeUnit.SECONDS)     // Increase read timeout
+            .writeTimeout(30, TimeUnit.SECONDS)    // Increase write timeout
+            .build()
+
+        // Initialize Retrofit with OkHttpClient
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(okHttpClient)  // Set OkHttpClient with timeouts
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        // Create the API service
         val apiService = retrofit.create(ApiService::class.java)
 
         // Initialize database, DAO, repository, and ViewModel
@@ -60,10 +73,13 @@ class SignalStrengthListFragment : Fragment() {
         recyclerView.adapter = adapter
 
         // Observe the LiveData from the ViewModel
-        viewModel.allSignals.observe(viewLifecycleOwner, { signals ->
+        viewModel.allSignals.observe(viewLifecycleOwner) { signals ->
             // Update the adapter with the new list
             adapter.updateData(signals)
-        })
+        }
+
+        // Refresh the signal strengths from the API
+        viewModel.refreshSignalStrengths()
 
         // Handle the FloatingActionButton click event
         val fabAddSignal = view.findViewById<FloatingActionButton>(R.id.fab_add_signal)

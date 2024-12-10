@@ -31,8 +31,11 @@ class SignalStrengthRepository(
         }
     }
 
-    // Retrieve data from local database
-    fun getSignalStrengthsFromDb(): LiveData<List<SignalStrength>> = signalStrengthDao.getAllSignalStrengths()
+//    // Retrieve data from local database
+//    fun getSignalStrengthsFromDb(): LiveData<List<SignalStrength>> = signalStrengthDao.getAllSignalStrengths()
+    fun getSignalStrengthsFromDb(): LiveData<List<SignalStrength>> {
+        return signalStrengthDao.getAllSignalStrengths()
+    }
 
     // Add a new signal strength
     suspend fun addSignal(signal: SignalStrength) {
