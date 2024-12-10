@@ -20,6 +20,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
 import java.util.concurrent.TimeUnit
 
 class SignalStrengthListFragment : Fragment() {
@@ -41,17 +48,13 @@ class SignalStrengthListFragment : Fragment() {
         // Get the base URL from strings.xml
         val baseUrl = getString(R.string.base_path)
 
-        // Configure OkHttpClient with custom timeouts
-        val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)  // Increase connection timeout
-            .readTimeout(30, TimeUnit.SECONDS)     // Increase read timeout
-            .writeTimeout(30, TimeUnit.SECONDS)    // Increase write timeout
-            .build()
+        // Configure OkHttpClient with custom timeouts and SSL disabled
+        val okHttpClient = getUnsafeOkHttpClient()
 
         // Initialize Retrofit with OkHttpClient
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(okHttpClient)  // Set OkHttpClient with timeouts
+            .client(okHttpClient)  // Use the OkHttpClient with SSL verification disabled
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -88,5 +91,35 @@ class SignalStrengthListFragment : Fragment() {
             val intent = Intent(requireContext(), AddSignalStrengthActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    // Function to create OkHttpClient with SSL verification disabled
+    private fun getUnsafeOkHttpClient(): OkHttpClient {
+        // Create a trust manager that does not perform certificate validation
+        val trustAllCertificates = object : X509TrustManager {
+            override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+            override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+        }
+
+        // Install the all-trusting trust manager
+        val sslContext: SSLContext
+        try {
+            sslContext = SSLContext.getInstance("TLS")
+            sslContext.init(null, arrayOf(trustAllCertificates), SecureRandom())
+        } catch (e: NoSuchAlgorithmException) {
+            throw RuntimeException("Failed to create SSL context", e)
+        } catch (e: KeyManagementException) {
+            throw RuntimeException("Failed to initialize SSL context", e)
+        }
+
+        // Set up OkHttpClient to use the custom SSLContext and disable hostname verification
+        return OkHttpClient.Builder()
+            .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
+            .hostnameVerifier { _, _ -> true }  // Disable hostname verification
+            .connectTimeout(30, TimeUnit.SECONDS)  // Increase connection timeout
+            .readTimeout(30, TimeUnit.SECONDS)     // Increase read timeout
+            .writeTimeout(30, TimeUnit.SECONDS)    // Increase write timeout
+            .build()
     }
 }

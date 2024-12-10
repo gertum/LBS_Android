@@ -3,5 +3,7 @@
     <string name="nav_open">Open navigation drawer</string>
     <string name="nav_close">Close navigation drawer</string>
     <string name="add_signal_strength">Add signal strength</string>
-    <string name="base_path">https://192.168.0.55:7181/api/Data/</string>
+<!--    The Android emulator provides a special IP address, 10.0.2.2, -->
+<!--    which is mapped to the host machine's localhost-->
+    <string name="base_path">https://10.0.2.2:7181/api/Data/</string>
 </resources>

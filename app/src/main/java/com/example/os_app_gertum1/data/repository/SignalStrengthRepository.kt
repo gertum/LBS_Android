@@ -16,17 +16,42 @@ class SignalStrengthRepository(
     // Refresh data from API
     suspend fun refreshSignalStrengths() {
         withContext(Dispatchers.IO) {
-            val response = api.fetchSignalStrengths()
-            if (response.isSuccessful) {
-                val signalStrengths = response.body()
-                if (signalStrengths != null) {
-                    signalStrengthDao.clearSignalStrengths() // Clear existing data
-                    signalStrengthDao.insertAllSignalStrengths(signalStrengths) // Insert new data
+            try {
+                Log.d("SignalRepository", "Starting API call...")
+
+                // Make API request
+                val response = api.fetchSignalStrengths()
+
+                // Log the full URL of the request using the raw response
+                Log.d("SignalRepository", "Full URL: ${response.raw().request.url}")
+
+                // Log the response status and headers
+                Log.d("SignalRepository", "Response status: ${response.code()}")
+                Log.d("SignalRepository", "Response headers: ${response.headers()}")
+
+                if (response.isSuccessful) {
+                    val signalStrengths = response.body()
+
+                    if (signalStrengths != null) {
+                        Log.d("SignalRepository", "Successfully fetched signal strengths: ${signalStrengths.size} items")
+
+                        // Clear and insert new data
+                        signalStrengthDao.clearSignalStrengths()
+                        signalStrengthDao.insertAllSignalStrengths(signalStrengths)
+                    } else {
+                        Log.e("SignalRepository", "Response body is null")
+                    }
                 } else {
-                    Log.e("SignalRepository", "Response body is null")
+                    // Log the error response body
+                    val errorBody = response.errorBody()?.string() ?: "No error body"
+                    Log.e("SignalRepository", "API call failed. Error body: $errorBody")
+                    Log.e("SignalRepository", "Error code: ${response.code()}")
+                    Log.e("SignalRepository", "Error message: ${response.message()}")
                 }
-            } else {
-                Log.e("SignalRepository", "API call failed: ${response.errorBody()}")
+
+            } catch (e: Exception) {
+                // Log any unexpected exceptions that might occur
+                Log.e("SignalRepository", "Exception occurred: ${e.localizedMessage}", e)
             }
         }
     }
