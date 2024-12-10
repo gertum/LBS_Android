@@ -23,9 +23,11 @@ class AddSignalStrengthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_signal_strength)
 
+        val baseUrl = getString(R.string.base_path)
+
         // Initialize Retrofit and API Service
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://your-remote-service.com/api/")
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)

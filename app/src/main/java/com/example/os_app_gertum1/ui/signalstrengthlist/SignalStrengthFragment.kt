@@ -36,9 +36,11 @@ class SignalStrengthListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val baseUrl = getString(R.string.base_path)
+
         // Initialize Retrofit and API Service
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://your-remote-service.com/api/")
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)

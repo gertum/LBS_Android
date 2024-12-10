@@ -1,15 +1,19 @@
-package com.example.os_app_gertum1.data.api
+package com.example.os_app_gertum1.data.network
 
+import android.content.Context
 import com.example.os_app_gertum1.data.network.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.example.os_app_gertum1.R
 
 object RetrofitInstance {
 
-    private const val BASE_URL = "http://your-remote-service.com/api/"
+    // Don't use const val for the BASE_URL since it's not a compile-time constant
+    fun getApiService(context: Context): ApiService {
+        // Fetch the BASE_URL from resources at runtime
+        val BASE_URL = context.getString(R.string.base_path)
 
-    val api: ApiService by lazy {
-        Retrofit.Builder()
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

@@ -3,4 +3,5 @@
     <string name="nav_open">Open navigation drawer</string>
     <string name="nav_close">Close navigation drawer</string>
     <string name="add_signal_strength">Add signal strength</string>
+    <string name="base_path">http://192.168.0.55:5187/api/Data/</string>
 </resources>
