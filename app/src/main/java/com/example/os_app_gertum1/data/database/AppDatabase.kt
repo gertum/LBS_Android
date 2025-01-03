@@ -13,6 +13,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun measurementDao(): MeasurementDao
 
+    // New DAOs for the actual app
+    abstract fun macAddressDao(): MacAddressDao
 
     companion object {
         @Volatile
