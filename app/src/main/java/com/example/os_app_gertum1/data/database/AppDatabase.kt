@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [SignalStrength::class, User::class, Measurement::class], version = 1, exportSchema = false)
+@Database(entities = [SignalStrength::class, User::class, Measurement::class, MacAddress::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // Provide DAOs for accessing the data
