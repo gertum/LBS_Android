@@ -15,4 +15,7 @@ interface MacAddressDao {
 
     @Query("SELECT * FROM mac_address_table")
     suspend fun getAllMacAddresses(): List<MacAddress>
+    // Fetch the most recent MAC address based on ID or timestamp
+    @Query("SELECT * FROM mac_address_table ORDER BY id DESC LIMIT 1")
+    suspend fun getLatestMacAddress(): MacAddress?
 }

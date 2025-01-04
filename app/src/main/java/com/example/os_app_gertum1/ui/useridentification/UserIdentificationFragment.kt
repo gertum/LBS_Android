@@ -54,7 +54,7 @@ class UserIdentificationFragment : Fragment() {
 
     private fun displayCurrentMac() {
         lifecycleScope.launch {
-            val macAddress = AppDatabase.getDatabase(requireContext()).macAddressDao().getMacAddressById(1)
+            val macAddress = AppDatabase.getDatabase(requireContext()).macAddressDao().getLatestMacAddress()
             macAddress?.let {
                 currentMacText.text = "Current MAC: ${it.macAddress}"
             } ?: run {
