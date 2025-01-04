@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [SignalStrength::class, User::class, Measurement::class, MacAddress::class], version = 1, exportSchema = false)
+@Database(entities = [SignalStrength::class, User::class, Measurement::class, MacAddress::class, UserMeasurement::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // Provide DAOs for accessing the data
@@ -15,6 +15,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     // New DAOs for the actual app
     abstract fun macAddressDao(): MacAddressDao
+    abstract fun userMeasurementDao(): UserMeasurementDAO
 
     companion object {
         @Volatile
@@ -26,7 +27,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database" // Replace with your desired database name
-                ).build()
+                )
+//                    .fallbackToDestructiveMigration() //might cause something bad later idk
+                    .build()
                 INSTANCE = instance
                 instance
             }

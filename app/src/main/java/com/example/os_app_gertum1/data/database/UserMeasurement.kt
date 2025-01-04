@@ -8,10 +8,10 @@ import androidx.room.PrimaryKey
     tableName = "user_measurement_table",
     foreignKeys = [
         ForeignKey(
-            entity = Measurement::class,     // Reference to the Measurement entity
-            parentColumns = ["matavimas"],    // Column in Measurement entity (primary key)
-            childColumns = ["closestGridPointId"], // Column in UserMeasurement (foreign key)
-            onDelete = ForeignKey.CASCADE     // Cascade delete behavior if Measurement is deleted
+            entity = Measurement::class, // Reference the parent entity
+            parentColumns = ["id"],     // Column in the parent entity
+            childColumns = ["closestGridPointId"], // Column in the child entity
+            onDelete = ForeignKey.CASCADE // Optional: Define behavior on delete
         )
     ]
 )
@@ -21,7 +21,6 @@ data class UserMeasurement(
     val strengthToAp1: Int,
     val strengthToAp2: Int,
     val strengthToAp3: Int,
-    val euclideanDistance: Double?, // Nullable
-    val closestGridPointId: Int?    // Foreign key referencing matavimas from Measurement
+    val euclideanDistance: Double?,
+    val closestGridPointId: Int? // Foreign key reference to Measurement.id
 )
-

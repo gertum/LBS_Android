@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_mac_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MAC Address"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_strength_to_ap1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Strength To AP1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_strength_to_ap2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Strength To AP2"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_strength_to_ap3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Strength To AP3"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_euclidean_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Euclidean Distance"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_closest_grid_point_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Closest Grid Point ID"
+        android:textSize="14sp" />
+</LinearLayout>
