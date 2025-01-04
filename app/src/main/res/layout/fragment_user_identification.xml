@@ -20,6 +20,14 @@
         android:layout_height="wrap_content"
         android:hint="Enter MAC Address"
         android:inputType="text" />
+    <TextView
+        android:id="@+id/tv_mac_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Hint: Use format XX:XX:XX:XX:XX:XX"
+        android:textColor="#888888"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/btn_save"

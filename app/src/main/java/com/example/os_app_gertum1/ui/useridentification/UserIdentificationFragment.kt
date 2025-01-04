@@ -44,10 +44,10 @@ class UserIdentificationFragment : Fragment() {
         btnSave.setOnClickListener {
             val macAddress = editMac.text.toString()
 
-            if (macAddress.isNotBlank()) {
+            if (isValidMacAddress(macAddress)) {
                 saveMacAddress(macAddress)
             } else {
-                Toast.makeText(requireContext(), "Please enter a valid MAC Address!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Invalid MAC Address! Use colon-separated format (e.g., 00:1A:2B:3C:4D:5E).", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -71,5 +71,11 @@ class UserIdentificationFragment : Fragment() {
             Toast.makeText(requireContext(), "MAC Address saved!", Toast.LENGTH_SHORT).show()
             displayCurrentMac() // Refresh the displayed MAC address
         }
+    }
+
+    // Helper function to validate MAC address
+    private fun isValidMacAddress(macAddress: String): Boolean {
+        val macRegex = "^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$"
+        return macAddress.matches(Regex(macRegex))
     }
 }
