@@ -10,7 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="User MAC Address"
-        android:inputType="text" />
+        android:inputType="text"
+        android:focusable="false"
+        android:cursorVisible="false"
+        android:background="@android:color/transparent" />
 
     <!-- EditText for strengthToAp1 -->
     <EditText

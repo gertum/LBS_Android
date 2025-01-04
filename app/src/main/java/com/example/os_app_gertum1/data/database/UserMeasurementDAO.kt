@@ -16,4 +16,7 @@ interface UserMeasurementDAO {
 
     @Query("SELECT * FROM user_measurement_table WHERE userMacAddress = :macAddress ORDER BY id DESC")
     suspend fun getMeasurementsForMac(macAddress: String): List<UserMeasurement>
+
+    @Query("SELECT * FROM user_measurement_table ORDER BY id DESC LIMIT 1")
+    suspend fun getLastMeasurement(): UserMeasurement?
 }

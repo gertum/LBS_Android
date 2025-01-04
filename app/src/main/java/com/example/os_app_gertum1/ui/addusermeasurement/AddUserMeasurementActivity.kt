@@ -19,8 +19,6 @@ class AddUserMeasurementActivity : AppCompatActivity() {
     private lateinit var editStrengthToAp1: EditText
     private lateinit var editStrengthToAp2: EditText
     private lateinit var editStrengthToAp3: EditText
-    private lateinit var editEuclideanDistance: EditText
-    private lateinit var editClosestGridPointId: EditText
     private lateinit var saveButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,9 +32,28 @@ class AddUserMeasurementActivity : AppCompatActivity() {
         editStrengthToAp3 = findViewById(R.id.edit_strength_to_ap3)
         saveButton = findViewById(R.id.button_save_user_measurement)
 
+        // Prefill the userMacAddress field with the last MAC address, if available
+        prefillMacAddress()
+
         // Set up save button listener
         saveButton.setOnClickListener {
             saveUserMeasurement()
+        }
+    }
+    private fun prefillMacAddress() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val userMeasurementDao =
+                AppDatabase.getDatabase(applicationContext).userMeasurementDao()
+            val lastMeasurement = userMeasurementDao.getLastMeasurement()
+
+            // Switch to the main thread to update the UI
+            launch(Dispatchers.Main) {
+                if (lastMeasurement != null) {
+                    editUserMacAddress.setText("My MAC: ${lastMeasurement.userMacAddress}")
+                } else {
+                    editUserMacAddress.hint = "Enter MAC Address in the User tab first"
+                }
+            }
         }
     }
 
