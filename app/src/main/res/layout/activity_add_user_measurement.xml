@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- EditText for userMacAddress -->
+    <EditText
+        android:id="@+id/edit_user_mac_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="User MAC Address"
+        android:inputType="text" />
+
+    <!-- EditText for strengthToAp1 -->
+    <EditText
+        android:id="@+id/edit_strength_to_ap1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_user_mac_address"
+        android:hint="Strength to AP1"
+        android:inputType="number" />
+
+    <!-- EditText for strengthToAp2 -->
+    <EditText
+        android:id="@+id/edit_strength_to_ap2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_strength_to_ap1"
+        android:hint="Strength to AP2"
+        android:inputType="number" />
+
+    <!-- EditText for strengthToAp3 -->
+    <EditText
+        android:id="@+id/edit_strength_to_ap3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_strength_to_ap2"
+        android:hint="Strength to AP3"
+        android:inputType="number" />
+
+
+    <!-- Button to save the user measurement -->
+    <Button
+        android:id="@+id/button_save_user_measurement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="Save User Measurement" />
+
+</RelativeLayout>

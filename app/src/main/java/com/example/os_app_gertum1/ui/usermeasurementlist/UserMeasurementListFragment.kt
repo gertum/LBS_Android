@@ -1,5 +1,6 @@
 package com.example.os_app_gertum1.ui.usermeasurementlist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.os_app_gertum1.R
 import com.example.os_app_gertum1.data.database.AppDatabase
 import com.example.os_app_gertum1.data.database.UserMeasurement
+import com.example.os_app_gertum1.ui.addusermeasurement.AddUserMeasurementActivity
 import kotlinx.coroutines.launch
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class UserMeasurementListFragment : Fragment() {
 
@@ -37,6 +40,14 @@ class UserMeasurementListFragment : Fragment() {
 
         // Load UserMeasurement data from the database
         loadUserMeasurements()
+
+        // Handle Floating Action Button click
+        val fabAddMeasurement = view.findViewById<FloatingActionButton>(R.id.fab_add_measurement)
+        fabAddMeasurement.setOnClickListener {
+            // Navigate to the Add User Measurement Activity
+            val intent = Intent(requireContext(), AddUserMeasurementActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun loadUserMeasurements() {
