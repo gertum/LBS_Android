@@ -56,7 +56,7 @@ class AddUserMeasurementActivity : AppCompatActivity() {
             // Switch to the main thread to update the UI
             launch(Dispatchers.Main) {
                 if (lastMacAddress != null) {
-                    editUserMacAddress.setText("My MAC: ${lastMacAddress.macAddress}")
+                    editUserMacAddress.setText(lastMacAddress.macAddress)
                 } else {
                     editUserMacAddress.hint = "Please enter MAC Address in the User tab first"
                 }
