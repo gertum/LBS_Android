@@ -46,4 +46,12 @@
         android:layout_height="wrap_content"
         android:text="Closest Grid Point ID"
         android:textSize="14sp" />
+
+    <!-- Edit Button -->
+    <Button
+        android:id="@+id/btn_edit_measurement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Edit Signal Strength" />
 </LinearLayout>

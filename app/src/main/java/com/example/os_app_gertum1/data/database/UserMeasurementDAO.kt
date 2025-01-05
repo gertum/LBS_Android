@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface UserMeasurementDAO {
@@ -19,4 +20,11 @@ interface UserMeasurementDAO {
 
     @Query("SELECT * FROM user_measurement_table ORDER BY id DESC LIMIT 1")
     suspend fun getLastMeasurement(): UserMeasurement?
+
+    @Query("SELECT * FROM user_measurement_table WHERE id = :id")
+    suspend fun getMeasurementById(id: Int): UserMeasurement?
+
+    @Update
+    suspend fun updateMeasurement(measurement: UserMeasurement)
+
 }

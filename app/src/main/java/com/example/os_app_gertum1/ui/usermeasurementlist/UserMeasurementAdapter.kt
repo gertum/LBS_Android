@@ -3,40 +3,57 @@ package com.example.os_app_gertum1.ui.usermeasurementlist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.os_app_gertum1.R
 import com.example.os_app_gertum1.data.database.UserMeasurement
 import com.example.os_app_gertum1.databinding.ItemUserMeasurementBinding
 
-class UserMeasurementAdapter(private var userMeasurements: List<UserMeasurement>) :
-    RecyclerView.Adapter<UserMeasurementAdapter.UserMeasurementViewHolder>() {
+class UserMeasurementAdapter(
+    private var measurements: List<UserMeasurement>,
+    private val onItemClick: (UserMeasurement) -> Unit,
+    private val onEditClick: (UserMeasurement) -> Unit // New callback for edit
+) : RecyclerView.Adapter<UserMeasurementAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserMeasurementViewHolder {
-        val binding = ItemUserMeasurementBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserMeasurementViewHolder(binding)
-    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val tvMacAddress = itemView.findViewById<TextView>(R.id.tv_mac_address)
+        private val tvStrengthToAp1 = itemView.findViewById<TextView>(R.id.tv_strength_to_ap1)
+        private val tvStrengthToAp2 = itemView.findViewById<TextView>(R.id.tv_strength_to_ap2)
+        private val tvStrengthToAp3 = itemView.findViewById<TextView>(R.id.tv_strength_to_ap3)
+        private val tvEuclideanDistance = itemView.findViewById<TextView>(R.id.tv_euclidean_distance)
+        private val tvClosestGridPointId = itemView.findViewById<TextView>(R.id.tv_closest_grid_point_id)
+        private val btnEditMeasurement = itemView.findViewById<Button>(R.id.btn_edit_measurement)
 
-    override fun onBindViewHolder(holder: UserMeasurementViewHolder, position: Int) {
-        val userMeasurement = userMeasurements[position]
-        holder.bind(userMeasurement)
-    }
+        fun bind(measurement: UserMeasurement) {
+            tvMacAddress.text = "MAC Address: ${measurement.userMacAddress}"
+            tvStrengthToAp1.text = "Strength To AP1: ${measurement.strengthToAp1}"
+            tvStrengthToAp2.text = "Strength To AP2: ${measurement.strengthToAp2}"
+            tvStrengthToAp3.text = "Strength To AP3: ${measurement.strengthToAp3}"
+            tvEuclideanDistance.text = "Euclidean Distance: ${measurement.euclideanDistance ?: "N/A"}"
+            tvClosestGridPointId.text = "Closest Grid Point ID: ${measurement.closestGridPointId ?: "N/A"}"
 
-    override fun getItemCount(): Int = userMeasurements.size
-
-    fun updateData(newList: List<UserMeasurement>) {
-        userMeasurements = newList
-        notifyDataSetChanged()
-    }
-
-    class UserMeasurementViewHolder(private val binding: ItemUserMeasurementBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(userMeasurement: UserMeasurement) {
-            binding.tvMacAddress.text = userMeasurement.userMacAddress
-            binding.tvStrengthToAp1.text = userMeasurement.strengthToAp1.toString()
-            binding.tvStrengthToAp2.text = userMeasurement.strengthToAp2.toString()
-            binding.tvStrengthToAp3.text = userMeasurement.strengthToAp3.toString()
-            binding.tvEuclideanDistance.text = userMeasurement.euclideanDistance?.toString() ?: "N/A"
-            binding.tvClosestGridPointId.text = userMeasurement.closestGridPointId?.toString() ?: "N/A"
+            // Handle Edit Button Click
+            btnEditMeasurement.setOnClickListener {
+                onEditClick(measurement) // Trigger the edit callback
+            }
         }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_user_measurement, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(measurements[position])
+    }
+
+    override fun getItemCount(): Int = measurements.size
+
+    fun updateData(newMeasurements: List<UserMeasurement>) {
+        measurements = newMeasurements
+        notifyDataSetChanged()
     }
 }

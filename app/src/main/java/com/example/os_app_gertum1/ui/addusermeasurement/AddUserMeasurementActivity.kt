@@ -22,6 +22,8 @@ class AddUserMeasurementActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var goBackButton: Button
 
+    private var userMeasurementId: Int? = null // ID for editing
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_user_measurement)
@@ -32,26 +34,30 @@ class AddUserMeasurementActivity : AppCompatActivity() {
         editStrengthToAp2 = findViewById(R.id.edit_strength_to_ap2)
         editStrengthToAp3 = findViewById(R.id.edit_strength_to_ap3)
         saveButton = findViewById(R.id.button_save_user_measurement)
-
-        // Prefill the userMacAddress field with the last MAC address, if available
-        prefillMacAddress()
-
-        // Initialize goBackButton
         goBackButton = findViewById(R.id.btn_go_back)
+
+        // Check if we're editing an existing UserMeasurement
+        userMeasurementId = intent.getIntExtra("USER_MEASUREMENT_ID", -1).takeIf { it != -1 }
+
+        if (userMeasurementId != null) {
+            loadUserMeasurement(userMeasurementId!!)
+        } else {
+            prefillMacAddress() // Prefill only for new measurements
+        }
 
         // Set up save button listener
         saveButton.setOnClickListener {
             saveUserMeasurement()
         }
         goBackButton.setOnClickListener {
-            finish() // For Activity, finishes and goes back
-            // Or use `findNavController().navigateUp()` if using Navigation Component
+            finish()
         }
     }
+
     private fun prefillMacAddress() {
         CoroutineScope(Dispatchers.IO).launch {
             val macAddressDao = AppDatabase.getDatabase(applicationContext).macAddressDao()
-            val lastMacAddress = macAddressDao.getLatestMacAddress() // Assuming you have a method to fetch the latest MAC address
+            val lastMacAddress = macAddressDao.getLatestMacAddress()
 
             // Switch to the main thread to update the UI
             launch(Dispatchers.Main) {
@@ -64,41 +70,72 @@ class AddUserMeasurementActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadUserMeasurement(id: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val userMeasurementDao = AppDatabase.getDatabase(applicationContext).userMeasurementDao()
+            val measurement = userMeasurementDao.getMeasurementById(id)
 
-    // Function to save the UserMeasurement to the database
+            if (measurement != null) {
+                launch(Dispatchers.Main) {
+                    editUserMacAddress.setText(measurement.userMacAddress)
+                    editStrengthToAp1.setText(measurement.strengthToAp1.toString())
+                    editStrengthToAp2.setText(measurement.strengthToAp2.toString())
+                    editStrengthToAp3.setText(measurement.strengthToAp3.toString())
+                }
+            } else {
+                launch(Dispatchers.Main) {
+                    Toast.makeText(this@AddUserMeasurementActivity, "Measurement not found", Toast.LENGTH_SHORT).show()
+                    finish() // Close activity if invalid ID
+                }
+            }
+        }
+    }
+
+
     private fun saveUserMeasurement() {
-        // Get the values from the EditText fields
         val userMacAddress = editUserMacAddress.text.toString()
         val strengthToAp1 = editStrengthToAp1.text.toString().toIntOrNull()
         val strengthToAp2 = editStrengthToAp2.text.toString().toIntOrNull()
         val strengthToAp3 = editStrengthToAp3.text.toString().toIntOrNull()
 
-        // Validate input
-        if (userMacAddress.isEmpty() || strengthToAp1 == null || strengthToAp2 == null || strengthToAp3 == null) {
+        // Validate fields
+        if (userMacAddress.isBlank() || strengthToAp1 == null || strengthToAp2 == null || strengthToAp3 == null) {
             Toast.makeText(this, "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Create a new UserMeasurement object
-        val userMeasurement = UserMeasurement(
-            userMacAddress = userMacAddress,
-            strengthToAp1 = strengthToAp1,
-            strengthToAp2 = strengthToAp2,
-            strengthToAp3 = strengthToAp3,
-            euclideanDistance = null,
-            closestGridPointId = null
-        )
-
-        // Save the UserMeasurement asynchronously in the database
         CoroutineScope(Dispatchers.IO).launch {
             val userMeasurementDao = AppDatabase.getDatabase(applicationContext).userMeasurementDao()
-            userMeasurementDao.insertMeasurement(userMeasurement)
 
-            // Show a success message on the main thread
+            if (userMeasurementId != null) {
+                val updatedMeasurement = UserMeasurement(
+                    id = userMeasurementId!!,
+                    userMacAddress = userMacAddress,
+                    strengthToAp1 = strengthToAp1,
+                    strengthToAp2 = strengthToAp2,
+                    strengthToAp3 = strengthToAp3,
+                    euclideanDistance = null,
+                    closestGridPointId = null
+                )
+                userMeasurementDao.updateMeasurement(updatedMeasurement)
+            } else {
+                val newMeasurement = UserMeasurement(
+                    userMacAddress = userMacAddress,
+                    strengthToAp1 = strengthToAp1,
+                    strengthToAp2 = strengthToAp2,
+                    strengthToAp3 = strengthToAp3,
+                    euclideanDistance = null,
+                    closestGridPointId = null
+                )
+                userMeasurementDao.insertMeasurement(newMeasurement)
+            }
+
             launch(Dispatchers.Main) {
-                Toast.makeText(applicationContext, "User Measurement saved successfully", Toast.LENGTH_SHORT).show()
-                finish() // Close the activity after saving
+                val action = if (userMeasurementId != null) "updated" else "saved"
+                Toast.makeText(applicationContext, "User Measurement $action successfully", Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
     }
 }
+

@@ -30,32 +30,39 @@ class UserMeasurementListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_user_measurements)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Set up adapter with an empty list to start
-        adapter = UserMeasurementAdapter(emptyList())
+        adapter = UserMeasurementAdapter(
+            emptyList(),
+            onItemClick = { measurement ->
+                // Handle item click if needed
+            },
+            onEditClick = { measurement ->
+                navigateToEditMeasurement(measurement) // Navigate to Edit
+            }
+        )
         recyclerView.adapter = adapter
 
-        // Load UserMeasurement data from the database
-        loadUserMeasurements()
-
-        // Handle Floating Action Button click
         val fabAddMeasurement = view.findViewById<FloatingActionButton>(R.id.fab_add_measurement)
         fabAddMeasurement.setOnClickListener {
-            // Navigate to the Add User Measurement Activity
             val intent = Intent(requireContext(), AddUserMeasurementActivity::class.java)
             startActivity(intent)
         }
+
+        loadUserMeasurements()
     }
 
     private fun loadUserMeasurements() {
         lifecycleScope.launch {
-            // Fetch all UserMeasurement records from Room DB
             val userMeasurements = AppDatabase.getDatabase(requireContext()).userMeasurementDao().getAllMeasurements()
-            // Update RecyclerView with the fetched data
             adapter.updateData(userMeasurements)
         }
+    }
+
+    private fun navigateToEditMeasurement(measurement: UserMeasurement) {
+        val intent = Intent(requireContext(), AddUserMeasurementActivity::class.java)
+        intent.putExtra("measurement_id", measurement.id) // Pass ID or other identifying info
+        startActivity(intent)
     }
 }
