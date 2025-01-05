@@ -23,4 +23,7 @@ interface MeasurementDao {
 
     @Query("DELETE FROM matavimai")
     suspend fun deleteAllMeasurements()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMeasurements(measurements: List<Measurement>)
 }

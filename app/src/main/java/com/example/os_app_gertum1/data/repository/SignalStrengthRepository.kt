@@ -62,6 +62,7 @@ class SignalStrengthRepository(
         return signalStrengthDao.getAllSignalStrengths()
     }
 
+    //bad TODO remove
     // Add a new signal strength
     suspend fun addSignal(signal: SignalStrength) {
         signalStrengthDao.insertSignalStrength(signal)
