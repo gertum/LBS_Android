@@ -20,6 +20,7 @@ class AddUserMeasurementActivity : AppCompatActivity() {
     private lateinit var editStrengthToAp2: EditText
     private lateinit var editStrengthToAp3: EditText
     private lateinit var saveButton: Button
+    private lateinit var goBackButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,27 +36,34 @@ class AddUserMeasurementActivity : AppCompatActivity() {
         // Prefill the userMacAddress field with the last MAC address, if available
         prefillMacAddress()
 
+        // Initialize goBackButton
+        goBackButton = findViewById(R.id.btn_go_back)
+
         // Set up save button listener
         saveButton.setOnClickListener {
             saveUserMeasurement()
         }
+        goBackButton.setOnClickListener {
+            finish() // For Activity, finishes and goes back
+            // Or use `findNavController().navigateUp()` if using Navigation Component
+        }
     }
     private fun prefillMacAddress() {
         CoroutineScope(Dispatchers.IO).launch {
-            val userMeasurementDao =
-                AppDatabase.getDatabase(applicationContext).userMeasurementDao()
-            val lastMeasurement = userMeasurementDao.getLastMeasurement()
+            val macAddressDao = AppDatabase.getDatabase(applicationContext).macAddressDao()
+            val lastMacAddress = macAddressDao.getLatestMacAddress() // Assuming you have a method to fetch the latest MAC address
 
             // Switch to the main thread to update the UI
             launch(Dispatchers.Main) {
-                if (lastMeasurement != null) {
-                    editUserMacAddress.setText("My MAC: ${lastMeasurement.userMacAddress}")
+                if (lastMacAddress != null) {
+                    editUserMacAddress.setText("My MAC: ${lastMacAddress.macAddress}")
                 } else {
-                    editUserMacAddress.hint = "Enter MAC Address in the User tab first"
+                    editUserMacAddress.hint = "Please enter MAC Address in the User tab first"
                 }
             }
         }
     }
+
 
     // Function to save the UserMeasurement to the database
     private fun saveUserMeasurement() {
