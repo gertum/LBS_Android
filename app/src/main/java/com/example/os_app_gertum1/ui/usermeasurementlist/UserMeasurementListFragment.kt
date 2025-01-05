@@ -62,7 +62,7 @@ class UserMeasurementListFragment : Fragment() {
 
     private fun navigateToEditMeasurement(measurement: UserMeasurement) {
         val intent = Intent(requireContext(), AddUserMeasurementActivity::class.java)
-        intent.putExtra("measurement_id", measurement.id) // Pass ID or other identifying info
+        intent.putExtra("USER_MEASUREMENT_ID", measurement.id) // Pass ID or other identifying info
         startActivity(intent)
     }
 }
