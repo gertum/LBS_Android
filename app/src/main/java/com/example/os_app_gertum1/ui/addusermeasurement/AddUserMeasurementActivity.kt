@@ -8,10 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.os_app_gertum1.R
 import com.example.os_app_gertum1.data.database.AppDatabase
+import com.example.os_app_gertum1.data.database.SignalStrength
 import com.example.os_app_gertum1.data.database.UserMeasurement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class AddUserMeasurementActivity : AppCompatActivity() {
 
@@ -91,51 +94,93 @@ class AddUserMeasurementActivity : AppCompatActivity() {
         }
     }
 
-
     private fun saveUserMeasurement() {
         val userMacAddress = editUserMacAddress.text.toString()
         val strengthToAp1 = editStrengthToAp1.text.toString().toIntOrNull()
         val strengthToAp2 = editStrengthToAp2.text.toString().toIntOrNull()
         val strengthToAp3 = editStrengthToAp3.text.toString().toIntOrNull()
 
-        // Validate fields
         if (userMacAddress.isBlank() || strengthToAp1 == null || strengthToAp2 == null || strengthToAp3 == null) {
             Toast.makeText(this, "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
             return
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val userMeasurementDao = AppDatabase.getDatabase(applicationContext).userMeasurementDao()
+        val db = AppDatabase.getDatabase(applicationContext)
+        val signalStrengthDao = db.signalStrengthDao()
 
-            if (userMeasurementId != null) {
-                val updatedMeasurement = UserMeasurement(
-                    id = userMeasurementId!!,
-                    userMacAddress = userMacAddress,
-                    strengthToAp1 = strengthToAp1,
-                    strengthToAp2 = strengthToAp2,
-                    strengthToAp3 = strengthToAp3,
-                    euclideanDistance = null,
-                    closestGridPointId = null
+        // Observe LiveData and process the signal strengths
+        signalStrengthDao.getAllSignalStrengths().observe(this) { allSignalStrengths ->
+            if (!allSignalStrengths.isNullOrEmpty()) {
+                val (closestGridPointId, distance) = findClosestMeasurement(
+                    userStrengths = listOf(
+                        "wiliboxas1" to strengthToAp1,
+                        "wiliboxas2" to strengthToAp2,
+                        "wiliboxas3" to strengthToAp3
+                    ),
+                    signalStrengths = allSignalStrengths
                 )
-                userMeasurementDao.updateMeasurement(updatedMeasurement)
+
+                // Save the user measurement with closest grid point ID and distance
+                CoroutineScope(Dispatchers.IO).launch {
+                    val userMeasurementDao = db.userMeasurementDao()
+
+                    val newMeasurement = UserMeasurement(
+                        userMacAddress = userMacAddress,
+                        strengthToAp1 = strengthToAp1,
+                        strengthToAp2 = strengthToAp2,
+                        strengthToAp3 = strengthToAp3,
+                        closestGridPointId = closestGridPointId,
+                        euclideanDistance = distance
+                    )
+                    userMeasurementDao.insertMeasurement(newMeasurement)
+
+                    launch(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@AddUserMeasurementActivity,
+                            "Measurement saved successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                }
             } else {
-                val newMeasurement = UserMeasurement(
-                    userMacAddress = userMacAddress,
-                    strengthToAp1 = strengthToAp1,
-                    strengthToAp2 = strengthToAp2,
-                    strengthToAp3 = strengthToAp3,
-                    euclideanDistance = null,
-                    closestGridPointId = null
-                )
-                userMeasurementDao.insertMeasurement(newMeasurement)
-            }
-
-            launch(Dispatchers.Main) {
-                val action = if (userMeasurementId != null) "updated" else "saved"
-                Toast.makeText(applicationContext, "User Measurement $action successfully", Toast.LENGTH_SHORT).show()
-                finish()
+                Toast.makeText(this, "No signal strengths available", Toast.LENGTH_SHORT).show()
             }
         }
     }
-}
 
+    private fun findClosestMeasurement(
+        userStrengths: List<Pair<String, Int>>,
+        signalStrengths: List<SignalStrength>
+    ): Pair<Int, Double> {
+        var closestGridPointId = -1
+        var minDistance = Double.MAX_VALUE
+
+        val groupedSignalStrengths = signalStrengths.groupBy { it.measurement }
+
+        for ((measurementId, strengths) in groupedSignalStrengths) {
+            val strengthsMap = strengths.associateBy({ it.sensor }, { it.strength })
+
+            val distance = computeDistance(userStrengths, strengthsMap)
+
+            if (distance < minDistance) {
+                minDistance = distance
+                closestGridPointId = measurementId
+            }
+        }
+
+        return Pair(closestGridPointId, minDistance)
+    }
+
+    private fun computeDistance(
+        userStrengths: List<Pair<String, Int>>,
+        strengthsMap: Map<String, Int?>
+    ): Double {
+        return sqrt(
+            userStrengths.sumOf { (sensor, strength) ->
+                val difference = strength - (strengthsMap[sensor] ?: 0)
+                difference * difference.toDouble()
+            }
+        )
+    }
+}
