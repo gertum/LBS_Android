@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.os_app_gertum1.data.database.AppDatabase
 import com.example.os_app_gertum1.data.database.Measurement
 import com.example.os_app_gertum1.data.database.SignalStrength
@@ -17,6 +18,7 @@ import com.example.os_app_gertum1.R
 import com.example.os_app_gertum1.data.database.MeasurementDao
 import com.example.os_app_gertum1.data.database.SignalStrengthDao
 import com.example.os_app_gertum1.data.database.UserMeasurementDAO
+import com.example.os_app_gertum1.ui.signalmap.VisitOrderAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -27,10 +29,11 @@ class SignalMapFragment : Fragment(R.layout.fragment_signal_map) {
     private lateinit var signalStrengthDao: SignalStrengthDao
     private lateinit var userMeasurementDao: UserMeasurementDAO
 
-    // Variables to hold live data
     private lateinit var measurementsLiveData: LiveData<List<Measurement>>
     private lateinit var signalStrengthsLiveData: LiveData<List<SignalStrength>>
     private lateinit var userMeasurementsLiveData: LiveData<List<UserMeasurement>>
+
+    private lateinit var adapter: VisitOrderAdapter // RecyclerView Adapter for visit order
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +41,27 @@ class SignalMapFragment : Fragment(R.layout.fragment_signal_map) {
     ): View? {
         binding = FragmentSignalMapBinding.inflate(inflater, container, false)
 
-        // Get the database instance and initialize the DAOs
+        // Initialize the database DAOs
         val db = AppDatabase.getDatabase(requireContext())
         measurementDao = db.measurementDao()
         signalStrengthDao = db.signalStrengthDao()
         userMeasurementDao = db.userMeasurementDao()
 
-        // Get the LiveData from DAOs
+        // Set up RecyclerView Adapter for visit order
+        adapter = VisitOrderAdapter()
+        binding.visitOrderRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.visitOrderRecyclerView.adapter = adapter
+
+        // Observe LiveData from DAOs
         measurementsLiveData = measurementDao.getAllMeasurements()
         signalStrengthsLiveData = signalStrengthDao.getAllSignalStrengths()
         userMeasurementsLiveData = userMeasurementDao.getAllMeasurements()
 
-        // Observe the LiveData
         measurementsLiveData.observe(viewLifecycleOwner, Observer { measurements ->
             signalStrengthsLiveData.observe(viewLifecycleOwner, Observer { signalStrengths ->
                 userMeasurementsLiveData.observe(viewLifecycleOwner, Observer { userMeasurements ->
-                    // Once all LiveData are updated, render the grid
                     renderGrid(measurements, signalStrengths, userMeasurements)
+                    displayUserVisitOrder(userMeasurements)
                 })
             })
         })
@@ -121,5 +128,13 @@ class SignalMapFragment : Fragment(R.layout.fragment_signal_map) {
 
         // Update the UI with the table
         binding.gridContainer.loadDataWithBaseURL(null, tableHtml.toString(), "text/html", "UTF-8", null)
+    }
+
+    private fun displayUserVisitOrder(userMeasurements: List<UserMeasurement>) {
+        // Sort the user measurements by their ID or any other field that indicates visit order
+        val visitOrder = userMeasurements.sortedBy { it.id }
+
+        // Display the visit order in the RecyclerView or TextView
+        adapter.updateData(visitOrder)
     }
 }

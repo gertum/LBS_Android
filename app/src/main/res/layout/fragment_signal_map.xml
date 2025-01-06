@@ -6,16 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.SignalMapFragment">
 
-    <!-- Container for the generated grid -->
+    <!-- Title Text: "User Visit Order" -->
+    <TextView
+        android:id="@+id/textUserVisitOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Visit Order"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp" />
+
+    <!-- RecyclerView to display the visit order of user -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/visitOrderRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textUserVisitOrder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- WebView to display the grid -->
     <WebView
         android:id="@+id/grid_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/visitOrderRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
