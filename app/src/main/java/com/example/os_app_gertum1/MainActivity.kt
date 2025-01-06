@@ -22,8 +22,16 @@ import com.example.os_app_gertum1.utils.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,9 +41,13 @@ class MainActivity : AppCompatActivity() {
 
         val baseUrl = getString(R.string.base_path)
 
+        // Configure OkHttpClient with custom timeouts and SSL disabled
+        val okHttpClient = getUnsafeOkHttpClient()
+
         // Initialize Retrofit
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)  // Replace with your API base URL
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -104,6 +116,35 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             bottomNavigation.selectedItemId = R.id.nav_map
         }
+    }
+    // Function to create OkHttpClient with SSL verification disabled
+    private fun getUnsafeOkHttpClient(): OkHttpClient {
+        // Create a trust manager that does not perform certificate validation
+        val trustAllCertificates = object : X509TrustManager {
+            override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+            override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+        }
+
+        // Install the all-trusting trust manager
+        val sslContext: SSLContext
+        try {
+            sslContext = SSLContext.getInstance("TLS")
+            sslContext.init(null, arrayOf(trustAllCertificates), SecureRandom())
+        } catch (e: NoSuchAlgorithmException) {
+            throw RuntimeException("Failed to create SSL context", e)
+        } catch (e: KeyManagementException) {
+            throw RuntimeException("Failed to initialize SSL context", e)
+        }
+
+        // Set up OkHttpClient to use the custom SSLContext and disable hostname verification
+        return OkHttpClient.Builder()
+            .sslSocketFactory(sslContext.socketFactory, trustAllCertificates)
+            .hostnameVerifier { _, _ -> true }  // Disable hostname verification
+            .connectTimeout(30, TimeUnit.SECONDS)  // Increase connection timeout
+            .readTimeout(30, TimeUnit.SECONDS)     // Increase read timeout
+            .writeTimeout(30, TimeUnit.SECONDS)    // Increase write timeout
+            .build()
     }
 }
 
