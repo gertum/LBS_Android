@@ -31,10 +31,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val baseUrl = getString(R.string.base_path)
 
         // Initialize Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://your-api-url.com/") // Replace with your API base URL
+            .baseUrl(baseUrl)  // Replace with your API base URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     // Fetch and store Measurements
-                    measurementRepository.fetchAndStoreMeasurements()
+                    measurementRepository.refreshMeasurements()
 
                     // Fetch and store SignalStrengths
                     signalStrengthRepository.refreshSignalStrengths()
