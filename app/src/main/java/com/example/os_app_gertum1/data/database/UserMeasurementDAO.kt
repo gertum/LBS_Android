@@ -1,5 +1,6 @@
 package com.example.os_app_gertum1.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,8 +13,8 @@ interface UserMeasurementDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeasurement(measurement: UserMeasurement)
 
-    @Query("SELECT * FROM user_measurement_table ORDER BY id DESC")
-    suspend fun getAllMeasurements(): List<UserMeasurement>
+//    @Query("SELECT * FROM user_measurement_table ORDER BY id DESC")
+//    suspend fun getAllMeasurements(): List<UserMeasurement>
 
     @Query("SELECT * FROM user_measurement_table WHERE userMacAddress = :macAddress ORDER BY id DESC")
     suspend fun getMeasurementsForMac(macAddress: String): List<UserMeasurement>
@@ -26,5 +27,9 @@ interface UserMeasurementDAO {
 
     @Update
     suspend fun updateMeasurement(measurement: UserMeasurement)
+
+
+    @Query("SELECT * FROM user_measurement_table")
+    fun getAllMeasurements(): LiveData<List<UserMeasurement>>
 
 }

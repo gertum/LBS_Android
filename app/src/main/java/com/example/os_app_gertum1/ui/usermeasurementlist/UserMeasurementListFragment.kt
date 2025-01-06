@@ -54,11 +54,12 @@ class UserMeasurementListFragment : Fragment() {
     }
 
     private fun loadUserMeasurements() {
-        lifecycleScope.launch {
-            val userMeasurements = AppDatabase.getDatabase(requireContext()).userMeasurementDao().getAllMeasurements()
+        val userMeasurementDao = AppDatabase.getDatabase(requireContext()).userMeasurementDao()
+        userMeasurementDao.getAllMeasurements().observe(viewLifecycleOwner) { userMeasurements ->
             adapter.updateData(userMeasurements)
         }
     }
+
 
     private fun navigateToEditMeasurement(measurement: UserMeasurement) {
         val intent = Intent(requireContext(), AddUserMeasurementActivity::class.java)
