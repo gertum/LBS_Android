@@ -22,7 +22,6 @@ class UserIdentificationFragment : Fragment() {
     private lateinit var editMac: EditText
     private lateinit var btnSave: Button
     private lateinit var currentMacText: TextView
-    private lateinit var goBackButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,11 +50,6 @@ class UserIdentificationFragment : Fragment() {
                 Toast.makeText(requireContext(), "Invalid MAC Address! Use colon-separated format (e.g., 00:1A:2B:3C:4D:5E).", Toast.LENGTH_SHORT).show()
             }
         }
-//        goBackButton.setOnClickListener {
-////            finish() // For Activity, finishes and goes back
-//            // Or use `findNavController().navigateUp()` if using Navigation Component
-//            findNavController().navigateUp()
-//        }
     }
 
     private fun displayCurrentMac() {
