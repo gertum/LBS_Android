@@ -36,7 +36,7 @@ class UserMeasurementListFragment : Fragment() {
 
         adapter = UserMeasurementAdapter(
             emptyList(),
-            onItemClick = { measurement ->
+            onDeleteClick = { measurement ->
                 // Handle item click if needed
             },
             onEditClick = { measurement ->

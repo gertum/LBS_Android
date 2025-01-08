@@ -2,6 +2,7 @@ package com.example.os_app_gertum1.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -32,4 +33,6 @@ interface UserMeasurementDAO {
     @Query("SELECT * FROM user_measurement_table")
     fun getAllMeasurements(): LiveData<List<UserMeasurement>>
 
+    @Delete
+    suspend fun delete(userMeasurement: UserMeasurement)
 }

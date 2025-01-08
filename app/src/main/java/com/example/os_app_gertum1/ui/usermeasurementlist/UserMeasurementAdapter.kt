@@ -12,7 +12,7 @@ import com.example.os_app_gertum1.databinding.ItemUserMeasurementBinding
 
 class UserMeasurementAdapter(
     private var measurements: List<UserMeasurement>,
-    private val onItemClick: (UserMeasurement) -> Unit,
+    private val onDeleteClick: (UserMeasurement) -> Unit,
     private val onEditClick: (UserMeasurement) -> Unit // New callback for edit
 ) : RecyclerView.Adapter<UserMeasurementAdapter.ViewHolder>() {
 
@@ -24,6 +24,7 @@ class UserMeasurementAdapter(
         private val tvEuclideanDistance = itemView.findViewById<TextView>(R.id.tv_euclidean_distance)
         private val tvClosestGridPointId = itemView.findViewById<TextView>(R.id.tv_closest_grid_point_id)
         private val btnEditMeasurement = itemView.findViewById<Button>(R.id.btn_edit_measurement)
+        private val btnDeleteMeasurement = itemView.findViewById<Button>(R.id.btn_delete_measurement)
 
         fun bind(measurement: UserMeasurement) {
             tvMacAddress.text = "MAC Address: ${measurement.userMacAddress}"
@@ -36,6 +37,11 @@ class UserMeasurementAdapter(
             // Handle Edit Button Click
             btnEditMeasurement.setOnClickListener {
                 onEditClick(measurement) // Trigger the edit callback
+            }
+
+            // Handle Delete Button Click
+            btnDeleteMeasurement.setOnClickListener {
+                onDeleteClick(measurement) // Trigger the delete callback
             }
         }
     }
