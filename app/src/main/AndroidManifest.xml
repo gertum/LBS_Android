@@ -37,6 +37,10 @@
         <activity android:name=".ui.addusermeasurement.AddUserMeasurementActivity"
             android:label="Add Signal Strength" />
 
+        <!-- EditUserMeasurementActivity -->
+        <activity android:name=".ui.editusermeasurement.EditUserMeasurementActivity"
+            android:label="Edit Signal Strength" />
+
     </application>
 
 </manifest>

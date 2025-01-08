@@ -13,6 +13,7 @@ import com.example.os_app_gertum1.R
 import com.example.os_app_gertum1.data.database.AppDatabase
 import com.example.os_app_gertum1.data.database.UserMeasurement
 import com.example.os_app_gertum1.ui.addusermeasurement.AddUserMeasurementActivity
+import com.example.os_app_gertum1.ui.editusermeasurement.EditUserMeasurementActivity
 import kotlinx.coroutines.launch
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -62,7 +63,7 @@ class UserMeasurementListFragment : Fragment() {
 
 
     private fun navigateToEditMeasurement(measurement: UserMeasurement) {
-        val intent = Intent(requireContext(), AddUserMeasurementActivity::class.java)
+        val intent = Intent(requireContext(), EditUserMeasurementActivity::class.java)
         intent.putExtra("USER_MEASUREMENT_ID", measurement.id) // Pass ID or other identifying info
         startActivity(intent)
     }
