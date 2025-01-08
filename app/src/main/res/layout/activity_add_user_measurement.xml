@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!-- TextView for user MAC address label -->
     <TextView
         android:id="@+id/tv_user_mac_address"
         android:layout_width="match_parent"
@@ -11,61 +12,71 @@
         android:text="My MAC:"
         android:textSize="16sp"
         android:padding="8dp" />
-    <!-- EditText for userMacAddress -->
+
+    <!-- EditText for user MAC address -->
     <EditText
         android:id="@+id/edit_user_mac_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tv_user_mac_address"
+        android:layout_marginTop="8dp"
         android:hint="User MAC Address"
         android:inputType="text"
         android:focusable="false"
         android:cursorVisible="false"
         android:background="@android:color/transparent" />
 
-    <!-- EditText for strengthToAp1 -->
+    <!-- EditText for strength to AP1 -->
     <EditText
         android:id="@+id/edit_strength_to_ap1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_user_mac_address"
+        android:layout_marginTop="16dp"
         android:hint="Strength to AP1"
         android:inputType="number" />
 
-    <!-- EditText for strengthToAp2 -->
+    <!-- EditText for strength to AP2 -->
     <EditText
         android:id="@+id/edit_strength_to_ap2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_strength_to_ap1"
+        android:layout_marginTop="16dp"
         android:hint="Strength to AP2"
         android:inputType="number" />
 
-    <!-- EditText for strengthToAp3 -->
+    <!-- EditText for strength to AP3 -->
     <EditText
         android:id="@+id/edit_strength_to_ap3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_strength_to_ap2"
+        android:layout_marginTop="16dp"
         android:hint="Strength to AP3"
         android:inputType="number" />
 
-
-    <!-- Button to save the user measurement -->
+    <!-- Button to save user measurement -->
     <Button
         android:id="@+id/button_save_user_measurement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/edit_strength_to_ap3"
         android:layout_alignParentEnd="true"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="100dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
         android:text="Save User Measurement" />
+
+    <!-- Button to go back -->
     <Button
         android:id="@+id/btn_go_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/edit_strength_to_ap3"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
         android:text="Go Back"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="300dp"
+        android:layout_toStartOf="@id/button_save_user_measurement"
         android:padding="8dp" />
 
 </RelativeLayout>
