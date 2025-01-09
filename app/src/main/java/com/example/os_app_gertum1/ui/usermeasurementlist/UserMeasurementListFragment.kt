@@ -14,6 +14,7 @@ import com.example.os_app_gertum1.data.database.AppDatabase
 import com.example.os_app_gertum1.data.database.UserMeasurement
 import com.example.os_app_gertum1.ui.addusermeasurement.AddUserMeasurementActivity
 import com.example.os_app_gertum1.ui.editusermeasurement.EditUserMeasurementActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -37,7 +38,7 @@ class UserMeasurementListFragment : Fragment() {
         adapter = UserMeasurementAdapter(
             emptyList(),
             onDeleteClick = { measurement ->
-                deleteMeasurement(measurement)
+                showDeleteConfirmation(measurement)
             },
             onEditClick = { measurement ->
                 navigateToEditMeasurement(measurement)
@@ -65,6 +66,19 @@ class UserMeasurementListFragment : Fragment() {
         lifecycleScope.launch {
             userMeasurementDao.deleteMeasurement(measurement)
         }
+    }
+    private fun showDeleteConfirmation(measurement: UserMeasurement) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Delete Measurement")
+            .setMessage("Are you sure you want to delete this measurement?")
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss() // Do nothing, just close the dialog
+            }
+            .setPositiveButton("Delete") { dialog, _ ->
+                deleteMeasurement(measurement) // Perform the deletion
+                dialog.dismiss()
+            }
+            .show()
     }
 
 
