@@ -34,5 +34,5 @@ interface UserMeasurementDAO {
     fun getAllMeasurements(): LiveData<List<UserMeasurement>>
 
     @Delete
-    suspend fun delete(userMeasurement: UserMeasurement)
+    suspend fun deleteMeasurement(userMeasurement: UserMeasurement)
 }

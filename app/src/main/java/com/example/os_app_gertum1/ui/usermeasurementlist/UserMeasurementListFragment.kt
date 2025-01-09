@@ -37,10 +37,10 @@ class UserMeasurementListFragment : Fragment() {
         adapter = UserMeasurementAdapter(
             emptyList(),
             onDeleteClick = { measurement ->
-                // Handle item click if needed
+                deleteMeasurement(measurement)
             },
             onEditClick = { measurement ->
-                navigateToEditMeasurement(measurement) // Navigate to Edit
+                navigateToEditMeasurement(measurement)
             }
         )
         recyclerView.adapter = adapter
@@ -58,6 +58,12 @@ class UserMeasurementListFragment : Fragment() {
         val userMeasurementDao = AppDatabase.getDatabase(requireContext()).userMeasurementDao()
         userMeasurementDao.getAllMeasurements().observe(viewLifecycleOwner) { userMeasurements ->
             adapter.updateData(userMeasurements)
+        }
+    }
+    private fun deleteMeasurement(measurement: UserMeasurement) {
+        val userMeasurementDao = AppDatabase.getDatabase(requireContext()).userMeasurementDao()
+        lifecycleScope.launch {
+            userMeasurementDao.deleteMeasurement(measurement)
         }
     }
 
