@@ -23,7 +23,7 @@ class EditUserMeasurementActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var goBackButton: Button
 
-    private var userMeasurementId: Int? = null // ID for editing
+    private var userMeasurementId: Int = -1 // ID for editing
     private val distanceService = DistanceService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,18 +38,16 @@ class EditUserMeasurementActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.button_save_user_measurement)
         goBackButton = findViewById(R.id.btn_go_back)
 
-        // Check if we're editing an existing UserMeasurement
-        userMeasurementId = intent.getIntExtra("USER_MEASUREMENT_ID", -1).takeIf { it != -1 }
-
-        if (userMeasurementId != null) {
-            loadUserMeasurement(userMeasurementId!!)
-        } else {
-            prefillMacAddress() // Prefill only for new measurements
+        // Initialize the userMeasurementId from the Intent
+        userMeasurementId = intent.getIntExtra("USER_MEASUREMENT_ID", -1).also {
+            require(it != -1) { "USER_MEASUREMENT_ID is missing or invalid in Intent" }
         }
+        // Call this method to prefill the fields with existing measurement data
+        loadUserMeasurement(userMeasurementId)
 
         // Set up save button listener
         saveButton.setOnClickListener {
-            saveUserMeasurement()
+            saveUserMeasurement(userMeasurementId)
         }
         goBackButton.setOnClickListener {
             finish()
@@ -93,7 +91,7 @@ class EditUserMeasurementActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserMeasurement() {
+    private fun saveUserMeasurement(id: Int) {
         val userMacAddress = editUserMacAddress.text.toString()
         val strengthToAp1 = editStrengthToAp1.text.toString().toIntOrNull()
         val strengthToAp2 = editStrengthToAp2.text.toString().toIntOrNull()
@@ -124,6 +122,7 @@ class EditUserMeasurementActivity : AppCompatActivity() {
                     val userMeasurementDao = db.userMeasurementDao()
 
                     val newMeasurement = UserMeasurement(
+                        userMeasurementId,
                         userMacAddress = userMacAddress,
                         strengthToAp1 = strengthToAp1,
                         strengthToAp2 = strengthToAp2,
@@ -131,7 +130,7 @@ class EditUserMeasurementActivity : AppCompatActivity() {
                         closestGridPointId = closestGridPointId,
                         euclideanDistance = distance
                     )
-                    userMeasurementDao.insertMeasurement(newMeasurement)
+                    userMeasurementDao.updateMeasurement(newMeasurement)
 
                     launch(Dispatchers.Main) {
                         Toast.makeText(
