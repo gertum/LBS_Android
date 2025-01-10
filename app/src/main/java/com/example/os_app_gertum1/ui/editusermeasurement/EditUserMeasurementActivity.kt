@@ -1,7 +1,6 @@
 package com.example.os_app_gertum1.ui.editusermeasurement
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -9,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.os_app_gertum1.R
 import com.example.os_app_gertum1.data.database.AppDatabase
 import com.example.os_app_gertum1.data.database.UserMeasurement
-import com.example.os_app_gertum1.service.DistanceService
+import com.example.os_app_gertum1.service.DistanceCalculationService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +23,7 @@ class EditUserMeasurementActivity : AppCompatActivity() {
     private lateinit var goBackButton: Button
 
     private var userMeasurementId: Int = -1 // ID for editing
-    private val distanceService = DistanceService()
+    private val distanceService = DistanceCalculationService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

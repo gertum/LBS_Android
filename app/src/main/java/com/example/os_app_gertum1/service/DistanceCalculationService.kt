@@ -1,10 +1,9 @@
 package com.example.os_app_gertum1.service
 
 import com.example.os_app_gertum1.data.database.SignalStrength
-import kotlin.math.pow
 import kotlin.math.sqrt
 
-class DistanceService {
+class DistanceCalculationService {
 
     fun findClosestMeasurement(
         userStrengths: List<Pair<String, Int>>,
