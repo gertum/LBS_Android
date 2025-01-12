@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.os_app_gertum1.data.database.UserMeasurement
-import com.example.os_app_gertum1.databinding.ListItemVisitOrderBinding
+import com.example.os_app_gertum1.databinding.ItemVisitOrderBinding
 
 class VisitOrderAdapter : RecyclerView.Adapter<VisitOrderAdapter.VisitOrderViewHolder>() {
 
     private var visitOrderList: List<UserMeasurement> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VisitOrderViewHolder {
-        val binding = ListItemVisitOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemVisitOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VisitOrderViewHolder(binding)
     }
 
@@ -29,7 +29,7 @@ class VisitOrderAdapter : RecyclerView.Adapter<VisitOrderAdapter.VisitOrderViewH
         notifyDataSetChanged()
     }
 
-    class VisitOrderViewHolder(private val binding: ListItemVisitOrderBinding) : RecyclerView.ViewHolder(binding.root) {
+    class VisitOrderViewHolder(private val binding: ItemVisitOrderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(userMeasurement: UserMeasurement) {
             binding.textGridPoint.text = "Grid Point ID: ${userMeasurement.closestGridPointId}"
             binding.textEuclideanDistance.text = "Euclidean Distance: ${userMeasurement.euclideanDistance ?: "N/A"}"

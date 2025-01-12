@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         if (PreferenceManager.isFirstRun(this)) {
             val serviceIntent = Intent(this, DataFetchService::class.java)
             startService(serviceIntent)
+            PreferenceManager.setFirstRun(this, false);
         }
 
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
@@ -59,14 +60,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.navigation_signal_list -> {
-                    // Replace fragment with SignalStrengthListFragment
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, UserMeasurementListFragment())
                         .commit()
                     true
                 }
                 R.id.navigation_user -> {
-                    // Replace fragment with UserIdentificationFragment
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, UserIdentificationFragment())
                         .commit()
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         // Load default fragment (e.g., MapFragment)
         if (savedInstanceState == null) {
-            bottomNavigation.selectedItemId = R.id.nav_map
+            bottomNavigation.selectedItemId = R.id.navigation_map
         }
     }
 }
