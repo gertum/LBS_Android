@@ -21,4 +21,10 @@
         android:name="com.example.os_app_gertum1.ui.useridentification.UserIdentificationFragment"
         android:label="User Fragment"
         tools:layout="@layout/fragment_user_identification" />
+    <fragment
+        android:id="@+id/navigation_hello"
+        android:name="com.example.os_app_gertum1.ui.hello.HelloFragment"
+        android:label="Hello Fragment"
+        tools:layout="@layout/fragment_hello" />
+
 </navigation>

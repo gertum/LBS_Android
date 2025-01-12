@@ -7,6 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:title="Activity Header"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--        &lt;!&ndash; Add a Button to the Toolbar &ndash;&gt;-->
+<!--        <Button-->
+<!--            android:id="@+id/toolbar_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Click Me"-->
+<!--            android:layout_gravity="end" /> &lt;!&ndash; Position the button to the right &ndash;&gt;-->
+<!--    </androidx.appcompat.widget.Toolbar>-->
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:layout_width="0dp"
@@ -26,5 +45,13 @@
         app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="homepage"
+        android:src="@drawable/ic_hello"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
