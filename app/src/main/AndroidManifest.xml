@@ -26,15 +26,6 @@
             </intent-filter>
         </activity>
 
-
-        <!-- EditSignalStrengthActivity -->
-        <activity android:name=".ui.editsignalstrength.EditSignalStrengthActivity"
-            android:label="Edit Signal Strength" />
-
-        <!-- AddSignalStrengthActivity -->
-        <activity android:name=".ui.addsignalstrength.AddSignalStrengthActivity"
-            android:label="Add Signal Strength" />
-
         <!-- AddUserMeasurementActivity -->
         <activity android:name=".ui.addusermeasurement.AddUserMeasurementActivity"
             android:label="Add Signal Strength" />
