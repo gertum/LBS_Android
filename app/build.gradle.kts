@@ -94,4 +94,7 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10.1")
 
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
+
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.3") // Adjust version as needed
+    implementation ("androidx.navigation:navigation-ui-ktx:2.7.3")
 }
