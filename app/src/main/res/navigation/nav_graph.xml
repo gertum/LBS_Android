@@ -1,6 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_map">
 
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.os_app_gertum1.ui.signalmap.SignalMapFragment"
+        android:label="Map Fragment"
+        tools:layout="@layout/fragment_signal_map" />
+
+    <fragment
+        android:id="@+id/navigation_signal_list"
+        android:name="com.example.os_app_gertum1.ui.usermeasurementlist.UserMeasurementListFragment"
+        android:label="Signal List Fragment"
+        tools:layout="@layout/fragment_user_measurement_list" />
+
+    <fragment
+        android:id="@+id/navigation_user"
+        android:name="com.example.os_app_gertum1.ui.useridentification.UserIdentificationFragment"
+        android:label="User Fragment"
+        tools:layout="@layout/fragment_user_identification" />
 </navigation>

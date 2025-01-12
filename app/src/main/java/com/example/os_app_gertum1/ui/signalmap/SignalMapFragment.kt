@@ -1,4 +1,4 @@
-package com.example.os_app_gertum1.ui
+package com.example.os_app_gertum1.ui.signalmap
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
