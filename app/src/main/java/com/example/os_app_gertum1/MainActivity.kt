@@ -44,12 +44,11 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // Handle top menu item clicks
+    // Go home
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_hello_button -> {
-                // Handle top button click here
-                Toast.makeText(this, "Top button clicked!", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.navigation_hello)
                 true
             }
             else -> super.onOptionsItemSelected(item)
