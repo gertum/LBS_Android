@@ -10,7 +10,11 @@
         android:id="@+id/textViewHello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, World!"
+        android:text="
+UserMeasurementFragment uses a ViewModel component (UserMeasurementListViewModel) for managing and observing data related to the UI, ensuring that data survives configuration changes (like screen rotations) without being lost. This is a common and recommended pattern to handle UI-related data in a lifecycle-conscious manner.
+
+SignalMapFragment, however, does not use a dedicated ViewModel but instead observes LiveData directly from multiple DAOs (such as MeasurementDao, SignalStrengthDao, and UserMeasurementDAO). While it still uses LiveData to manage and display data, it doesn't utilize a centralized ViewModel for managing the UI-related data. Instead, it interacts directly with the data sources.
+"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
